@@ -1,0 +1,49 @@
+<h1>Warp Wørld</h1>
+
+<p>
+This website is a quick hack that provides super basic services for <strong>Super Mario Maker 2</strong> similar to that of <strong>Warp.World</strong><br>
+When having signed in, you can create a bookmark for the page using your web browser, and never have to sign in manually again.<br>
+<br>
+
+</p>
+
+<p>
+<i>updated 15/07/19 </i><br>
+<b>supports for Nightbot and Botisimo:</b><br>
+ - level submission<br>
+ - level replacement<br>
+ - level removal<br>
+<b>allows queuer to do:</b> <br>
+ - play level, seeing elapsed time<br>
+ - skip level<br>
+ - complete level, storing time spent<br>
+ - remove level<br>
+ - empty queue<br>
+ - open and close queue<br>
+</p>
+
+<p>
+<strong>Notice: </strong> this site asks you to preferrably provide your streaming API key. The secret one provided to you by e.g. Youtube or Twitch. This is used in order to uniquely identify you.<br>
+Also out of lazyness - but do not worry, <strike>API keys are encrypted when stored in our database, that way I can't read them.</strike>.<br>
+You secret is in safe hands - though alternatively, you can just use a regular phony password (though you'd best guarantee it be a unique identifier). 
+</p>
+
+<p>
+<i>
+If you have <b>questions</b>, <b>suggestions</b> for features, or the like - do not hesitate to send me an email or hit me up on Discord.<br>
+<strong>Discord:</strong> eirik#2638<br>
+<strong>E-mail:</strong> jenssen.eirik@gmail.com <br>
+</i>
+</p>
+<hr>
+<h1>Sign in as existing user</h1>
+<strong>API key</strong><br>
+<input type="text" id="sign-in-field">
+<button type="button" onclick="document.location = '/warp/' + document.getElementById('sign-in-field').value;">Sign in</button>
+
+<hr>
+<h1>Create new Warp Wørld user</h1>
+
+
+
+<%= render 'form', warp_user: @warp_user %>

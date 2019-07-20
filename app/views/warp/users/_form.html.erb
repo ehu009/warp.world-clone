@@ -1,0 +1,28 @@
+<%= form_with(model: warp_user, local: true) do |form| %>
+  <% if warp_user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(warp_user.errors.count, "error") %> prohibited this warp_user from being saved:</h2>
+
+      <ul>
+      <% warp_user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+  <div class="field">
+    <strong><%= form.label :channel_name %></strong>
+    <%= form.text_field :channel_name %>
+  </div>
+    
+  <div class="field">
+    <strong><%= form.label :encrypted_api_key do |label|%>key (our secret)<% end %></strong><br>
+    <%= form.text_field :api_key %>
+  </div>
+  
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

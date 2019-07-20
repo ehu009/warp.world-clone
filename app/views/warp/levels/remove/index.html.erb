@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Warp Levels</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @warp_levels.each do |warp_level| %>
+      <tr>
+        <td><%= link_to 'Show', warp_level %></td>
+        <td><%= link_to 'Edit', edit_warp_level_path(warp_level) %></td>
+        <td><%= link_to 'Destroy', warp_level, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Warp Level', new_warp_level_path %>

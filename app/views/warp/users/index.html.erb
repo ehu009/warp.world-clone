@@ -1,0 +1,9 @@
+
+<h1>Warp Users</h1>
+
+<% @warp_users.each do |u| %>
+
+<strong><%= u.channel_name %>
+</strong> ||| queue is <% if u.active then %>OPEN<% else %>CLOSED<% end %>
+
+<% end %>

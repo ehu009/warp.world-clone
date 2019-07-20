@@ -1,0 +1,54 @@
+<h1>Level queue for channel "<%= @warp_user.channel_name %>"</h1>
+
+<p>
+<strong>
+Levels are listed in the order the were submitted.
+</strong>
+</p>
+
+<hr/>
+
+<% if @levels == nil or @levels == [] then %>
+<p>
+<strong>The queue is empty</strong>
+</p>
+<% else %>
+
+
+<p>
+<table border="2">
+<thead>
+<strong>
+<tr>
+<td>Current level?</td>
+<td>Time since submission</td>
+<td>Added by</td>
+
+<td>&nbsp;</td>
+<td>Level code</td>
+<td>&nbsp;</td>
+<td>Status</td>
+</tr>
+</strong>
+</thead>
+<tbody>
+<% @levels.each do |l| %>
+
+<tr>
+<td><% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><%end%> </td>
+<td><%= distance_of_time_in_words_to_now(l.created_at) %></td>
+<td><strong><%= l.added_by %></strong></td>
+
+<td>&nbsp;</td>
+<td><strong><%= l.code %></strong></td>
+<td>&nbsp;</td>
+<td><%= l.status %></td>
+</tr>
+
+
+
+<% end %>
+</tbody>
+</table>
+</p>
+<% end %>
