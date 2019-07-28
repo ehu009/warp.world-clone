@@ -1,15 +1,20 @@
 Rails.application.routes.draw do
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  
+  constraints :subdomain => 'minecraft' do
   root to: 'lander#index'
-  
   get '/kart', to: 'lander#kart'
   get '/mapfolder', :to => redirect('/overviewer/')
+    
+  end
+  
   
   get 'passkey', to: 'application#pkey'
+
   
-  namespace :warp do
+constraints :subdomain => 'warp' do
+scope module: 'warp' do
+#  namespace :warp do
     root to: 'users#new'
 	
 	#get '/users/:user_id/
@@ -41,4 +46,5 @@ Rails.application.routes.draw do
   end
   
   
+end
 end
