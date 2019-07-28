@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[Unit]
+Description="Eirik's web server; hosts warp.world-clone.com, eirik.site"
+
+APPDIR="/home/eirik/warp.world-clone"
+APPBIN="/bin/sh"
+APPEXEC="web.sh"
+
+[Service]
+ExecStart=¤$APPBIN $APPDIR/$APPEXEC
