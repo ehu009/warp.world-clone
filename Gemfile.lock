@@ -53,8 +53,6 @@ GEM
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
-    attr_encrypted (3.1.0)
-      encryptor (~> 3.0.0)
     bindex (0.8.1)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
@@ -82,10 +80,18 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
+<<<<<<< HEAD
     encryptor (3.0.0)
     erubi (1.8.0)
     execjs (2.7.0)
     ffi (1.11.1)
+=======
+    duktape (2.3.0.0)
+    erubi (1.8.0)
+    execjs (2.7.0)
+    ffi (1.11.1)
+    ffi (1.11.1-x64-mingw32)
+>>>>>>> master
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.6.0)
@@ -106,8 +112,16 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     msgpack (1.3.0)
+<<<<<<< HEAD
     nio4r (2.4.0)
     nokogiri (1.10.3)
+=======
+    msgpack (1.3.0-x64-mingw32)
+    nio4r (2.4.0)
+    nokogiri (1.10.3)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.3-x64-mingw32)
+>>>>>>> master
       mini_portile2 (~> 2.4.0)
     public_suffix (3.1.1)
     puma (3.12.1)
@@ -188,9 +202,12 @@ GEM
 
 PLATFORMS
   ruby
+<<<<<<< HEAD
+=======
+  x64-mingw32
+>>>>>>> master
 
 DEPENDENCIES
-  attr_encrypted
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)
