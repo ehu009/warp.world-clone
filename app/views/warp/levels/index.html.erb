@@ -1,15 +1,38 @@
 
 <style>
 
+  body {
+    background-color: midnightblue;
+ /*   font-family: Avenir, "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  */
+  }
+  .card-header.bg-primary{
+
+    background-color : #f9db00;
+  }
+  .card-body.bg-primary, .card.bg-primary {
+    background-color : #ecbb00, !important;
+    font-weight: bold;
+
+/*    font-family: Avenir, "Open Sans", "Helvetica Neue", Helvetica, Arial, Verdana, Roboto, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Meiryo UI", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  */
+  }
+
+
+
+
 </style>
 
 <div class="container-fluid"><div class="row">
 
   <div class="col-sm-2 col-lg-3"></div>
 
-  <div class="col-sm-6 container card">
+  <div class="col-sm-6 container">
+    <div class="card">
     <div class="card-header">
-      <h1>Level queue for channel "<%= @warp_user.channel_name %>"</h1>
+      <h1>Level queue for channel "<%= @warp_user.channel_name %>"</h1><br>
+      <h1 style="font-weight:bold;font-family: Arial">Level queue for channel "<%= @warp_user.channel_name %>"</h1>
+
     </div>
     <div class="card-body">
 
@@ -66,7 +89,7 @@ Levels are listed in the order the were submitted.
 </table>
 </p>
 <% end %>
-
+    </div>
     </div>
   </div>
 
