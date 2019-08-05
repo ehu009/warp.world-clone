@@ -16,6 +16,15 @@ constraints :subdomain => 'warp' do
 scope module: 'warp' do
 #  namespace :warp do
     root to: 'users#new'
+    
+constraints :domain => 'world-clone' do
+  get '/.well-known/acme-challenge/Gh_vx-b_RURnzDNQV8hEGrPnn2ZBgm1fo_ZNPDh7Cp8', :to => redirect('/.well-known/acme-challenge/Gh_vx-b_RURnzDNQV8hEGrPnn2ZBgm1fo_ZNPDh7Cp8')
+  
+end
+constraints :domain => 'world2' do
+  get '/.well-known/acme-challenge/xySFohsy71COCvcTtHeHc45ph8v_obCM8Y_nFniH0H8', :to => redirect('/.well-known/acme-challenge/xySFohsy71COCvcTtHeHc45ph8v_obCM8Y_nFniH0H8')
+end
+
 	
 	#get '/users/:user_id/
     get '/users/:user_id/replace', to: 'levels#replace', as: :viewer_replace
