@@ -4,7 +4,7 @@
 Linking to your queue, for viewers to see:&nbsp;
 <strong>
 <code>
-<%= warp_user_levels_url(@warp_user) %>
+<%= user_levels_url(@warp_user) %>
 </code></strong>
 </p>
 
@@ -15,21 +15,21 @@ Just paste these into your <strong>Nightbot</strong> commands:<br/>
 Submissions (<i>e.g. !add</i>):&nbsp;
 <strong>
 <code>
-$(urlfetch <%= warp_user_submission_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+$(urlfetch <%= user_submission_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
 </code></strong><br>
 </p>
 <p>
 Replacements (<i>e.g. !exch</i>):&nbsp;
 <strong>
 <code>
-$(urlfetch <%= warp_viewer_replace_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+$(urlfetch <%= viewer_replace_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
 </code></strong><br>
 </p>
 <p>
 Removals (<i>e.g. !del</i>):&nbsp;
 <strong>
 <code>
-$(urlfetch <%= warp_viewer_remove_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+$(urlfetch <%= viewer_remove_url(@warp_user) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
 </code></strong><br>
 </p>
 
@@ -42,21 +42,21 @@ Just paste these into your <strong>Botisimo</strong> commands:<br/>
 Submissions (<i>e.g. !add</i>):&nbsp;
 <strong>
 <code>
-$(fetch <%= warp_user_submission_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+$(fetch <%= user_submission_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
 </code></strong><br>
 </p>
 <p>
 Replacements (<i>e.g. !exch</i>):&nbsp;
 <strong>
 <code>
-$(fetch <%= warp_viewer_replace_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+$(fetch <%= viewer_replace_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
 </code></strong><br>
 </p>
 <p>
 Removals (<i>e.g. !del</i>):&nbsp;
 <strong>
 <code>
-$(fetch <%= warp_viewer_remove_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+$(fetch <%= viewer_remove_url(@warp_user) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
 </code></strong><br>
 </p>
 <p>
@@ -72,7 +72,7 @@ $(fetch <%= warp_viewer_remove_url(@warp_user) %>?added_by=$(urlencode $(usernam
 <td width="40%">
 <h3>Editing your user info</h3>
 
-<%= render "form", warp_user: @warp_user %>
+<%= render "formus", warp_user: @warp_user %>
 </td>
 
 <td width="40%">
@@ -83,12 +83,12 @@ $(fetch <%= warp_viewer_remove_url(@warp_user) %>?added_by=$(urlencode $(usernam
 Your submission queue is currently <b><% if @warp_user.active then %>OPEN<% else %>CLOSED<%end%></b>:&nbsp;
 
 <% if @warp_user.active then %>
-<%= link_to warp_queue_close_path(@warp_user.api_key) do |link| %>
+<%= link_to queue_close_path(@warp_user.api_key) do |link| %>
 <button align="center" type="button">Close the queue</button>
 <% end %>
 <% else %>
 
-<%= link_to warp_queue_open_path(@warp_user.api_key) do |link| %>
+<%= link_to queue_open_path(@warp_user.api_key) do |link| %>
 <button type="button">Open the queue</button>
 <% end %>
 
@@ -105,7 +105,7 @@ Your submission queue is currently <b><% if @warp_user.active then %>OPEN<% else
 
 <p>
 <strong>Clear all levels from queue:</strong>&nbsp;
-<%= link_to warp_list_clear_all_path(@warp_user.api_key) do |link| %>
+<%= link_to list_clear_all_path(@warp_user.api_key) do |link| %>
 <button type="button">Commit</button>
 <% end %>
 </p>
@@ -181,22 +181,22 @@ When you are done, hit either to complete or skip the current level.<br>
 <td>&nbsp;</td>
 
 
-<td><%= link_to warp_play_level_path(@warp_user.api_key, l.code) do |link| %>
+<td><%= link_to play_level_path(@warp_user.api_key, l.code) do |link| %>
 <i class="fas fa-play"></i>
 <% end %>
 </td>
-<td><%= link_to warp_skip_level_path(@warp_user.api_key, l.code) do |link| %>
+<td><%= link_to skip_level_path(@warp_user.api_key, l.code) do |link| %>
 <i class="fas fa-forward"></i>
 <% end %></td>
-<td><%= link_to warp_complete_level_path(@warp_user.api_key, l.code) do |link| %>
+<td><%= link_to complete_level_path(@warp_user.api_key, l.code) do |link| %>
 <i class="fas fa-check"></i>
 <% end %></td>
-<td><%= link_to warp_reset_level_path(@warp_user.api_key, l.code) do |link| %>
+<td><%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
 <i class="fas fa-undo"></i>
 <% end %></td>
 <td>&nbsp;
 </td>
-<td><%= link_to warp_remove_level_path(@warp_user.api_key, l.code) do |link| %>
+<td><%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
 <i class="fas fa-trash"></i>
 <% end %></td>
 
