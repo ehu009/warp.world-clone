@@ -52,7 +52,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  
+  config.action_dispatch.tld_length = 0
   ##FetchAndRenderJob.set(wait: 30.seconds()).perform_later()
   
   # Raises error for missing translations
