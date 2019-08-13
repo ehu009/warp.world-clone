@@ -1,38 +1,35 @@
 class Warp::UsersController < ApplicationController
-  before_action :set_warp_user, only: [:show, :update, :destroy]
-  before_action :using_api_key, only: [:enable, :disable, :play, :remove, :skip, :complete, :reset, :clear]
-  
-  
-  def redir
-    redirect_to edit_list_path(params[:api_key])
+  before_action :set_warp_user, only: [:show, :destroy]
+  before_action :using_api_key, only: [:update, :enable, :disable, :play, :start, :remove, :skip, :complete, :reset, :clear]
+
+  def play
+    code = params[:code]
+    if code != nil then
+      # change level
+      @warp_user.current = Level.find_by(code: code)
+      @warp_user.save
+    end
   end
-  
-  
+
   def enable
     @warp_user.active = true
     @warp_user.save
-    flash.now[:notice] = "You've opened the queue"
-    redir
   end
-  
   def disable
     @warp_user.active = false
     @warp_user.save
-    flash.now[:notice] = "You've closed the queue"
-    redir
   end
-  
-  
   def clear
     @warp_user.levels.each do |l|
       l.destroy
     end
-    
-    
-    redir
   end
-  
-  def play
+
+  def redir
+    redirect_to edit_list_path(params[:api_key])
+  end
+
+  def start
     level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
     level.status = "current"
     level.started_at = Time.now
@@ -112,6 +109,7 @@ class Warp::UsersController < ApplicationController
   # PATCH/PUT /warp/users/1
   # PATCH/PUT /warp/users/1.json
   def update
+    using_api_key
     respond_to do |format|
       if @warp_user.update(warp_user_params)
         format.html { redirect_to edit_list_path(@warp_user.api_key), notice: 'User was successfully updated.' }
