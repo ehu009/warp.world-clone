@@ -90,23 +90,20 @@ class Warp::LevelsController < ApplicationController
   def create
     submitter = CGI::unescape params[:added_by]
     user = Warp::User.find params[:user_id]
-    code = params[:code]
-    
-    
     #check if queue is closed or not
     if user.active == false then
       render plain: "Sorry, @#{submitter} - it seems like the submission queue has been closed for now!"
       return
     end
-    
-    
-    pattern = /(([a-hj-np-yA-Z0-9]{3}-){2}[a-hj-np-yA-Z0-9]{3})/
+    code = params[:code]
+
+    pattern = /(([a-hj-np-yA-Z0-9]{3}[-|\s]){2}[a-hj-np-yA-Z0-9]{3})/
     matches = code.match(pattern)
     if matches != nil then
       code = matches[0]
       warp_level = Warp::Level.where(code: code, user_id: user.id)
       if warp_level == nil or warp_level == [] then
-           
+
       warp_level = Warp::Level.new
       warp_level.added_by = submitter
       warp_level.code = code
