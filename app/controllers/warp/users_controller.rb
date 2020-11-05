@@ -97,7 +97,7 @@ class Warp::UsersController < ApplicationController
 
     respond_to do |format|
       if @warp_user.save
-        format.html { redirect_to edit_list_path(@warp_user.api_key), notice: 'User was successfully created.' }
+        format.html { redirect_to queuer_path(@warp_user.api_key), notice: 'User was successfully created.' }
         #format.json { render :show, status: :created, location: @warp_user }
       else
         format.html { render :new }
@@ -111,8 +111,8 @@ class Warp::UsersController < ApplicationController
   def update
     using_api_key
     respond_to do |format|
-      if @warp_user.update(warp_user_params)
-        format.html { redirect_to edit_list_path(@warp_user.api_key), notice: 'User was successfully updated.' }
+      if @warp_user.update(params)
+        format.html { redirect_to queuer_path(@warp_user.api_key), notice: 'User was successfully updated.' }
         #format.json { render :show, status: :ok, location: @warp_user }
       else
         format.html { render :edit }
