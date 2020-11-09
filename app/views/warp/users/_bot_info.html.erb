@@ -1,0 +1,78 @@
+<style>
+  .child {
+    scroll-snap-align: start;
+  }
+
+    code {background-color: black;
+      color: white;}
+</style>
+
+<div class="container" style="display: flex; overflow-x:auto;scroll-snap-type: y mandatory;">
+  <div class="container col-md-6">
+    <section class="child">
+
+      <h3>Nightbot integration</h3>
+
+      Just paste these into your <strong>Nightbot</strong> commands:<br/>
+      <p>
+        Submissions (<i>e.g. !add</i>):&nbsp;
+        <strong>
+          <code>
+            $(urlfetch <%= user_submission_url(usr) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+          </code></strong><br>
+      </p>
+      <p>
+        Replacements (<i>e.g. !exch</i>):&nbsp;
+        <strong>
+          <code>
+            $(urlfetch <%= user_replacement_url(usr) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+          </code></strong><br>
+      </p>
+      <p>
+        Removals (<i>e.g. !del</i>):&nbsp;
+        <strong>
+          <code>
+            $(urlfetch <%= user_removal_url(usr) %>?added_by=$(eval encodeURIComponent(`$(user)`);)&code=$(querystring))
+          </code></strong><br>
+      </p>
+    </section>
+  </div>
+  <div class="container col-md-6">
+    <section class="child">
+      <h3>Botisimo integration</h3>
+
+      Just paste these into your <strong>Botisimo</strong> commands:<br/>
+      <p>
+        Submissions (<i>e.g. !add</i>):&nbsp;
+        <strong>
+          <code>
+            $(fetch <%= user_submission_url(usr) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+          </code></strong><br>
+      </p>
+      <p>
+        Replacements (<i>e.g. !exch</i>):&nbsp;
+        <strong>
+          <code>
+            $(fetch <%= user_replacement_url(usr) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+          </code></strong><br>
+      </p>
+      <p>
+        Removals (<i>e.g. !del</i>):&nbsp;
+        <strong>
+          <code>
+            $(fetch <%= user_removal_url(usr) %>?added_by=$(urlencode $(usernameplain))&code=$(query))
+          </code></strong><br>
+      </p>
+      <p>
+
+    </section>
+  </div>
+  <div class="container col-md-6">
+    <section class="child">
+      oogf :3
+    </section>
+  </div>
+</div>
+
+
+

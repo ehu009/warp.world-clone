@@ -1,0 +1,63 @@
+
+
+
+<% txt = "Levels can not be submitted to the queue" %>
+<% url=queue_open_path(@warp_user.api_key) %>
+<% if @warp_user.active then %>
+<% txt="Levels can be submitted to the queue" %>
+<% url=queue_close_path(@warp_user.api_key) %>
+<% end %>
+
+<!--Your submission queue is currently-->
+<div id="faucet" class="checkbox">
+
+    <label>
+      <!--<%#= link_to queue_open_path(@warp_user.api_key), class: 'btn', id: 'faucet-link', remote: :true do |l| %>-->
+        <!--<input id="faucet-input" remote="true" type="checkbox" data-toggle="toggle" data-on="OPEN" data-off="CLOSED" >-->
+      <%# end %>
+<a id="faucet-link" data-remote="true">
+      <%#= link_to url, id: 'faucet-link', remote: :true do |l| %>
+        <input id="faucet-input" type="checkbox" data-on="OPEN" data-off="CLOSED"> <!-- data-toggle="toggle" >-->
+      <%# end %>
+</a>
+      <div id="faucet-text">
+      <%= txt %>
+      </div>
+  </label>
+</div>
+<script>
+    $(function() {
+        var j = $('#faucet-input');
+        var a = $('#faucet-link');
+       //   a.setAttribute("href","<%#= escape_javascript(queue_open_path(@warp_user.api_key)) %>");
+        a.href = "<%= escape_javascript(url) %>";
+        <% if @warp_user.active == true then %>
+        j.prop('checked', true);
+
+        <% else %>
+        j.prop('checked', false);
+        <% end %>
+
+        j.bootstrapToggle({
+            onstyle: "success",
+            offstyle: "danger",
+            size: 'large'
+        });
+
+
+    });
+    /*
+    $('#faucet-input').click(function(){
+        $('#faucet-input').bootstrapToggle('disable');
+
+    })*/
+
+   // $('#faucet-input').change(function(){
+       // $('#faucet-input').bootstrapToggle('disable');
+       // $('#faucet-input').disable();
+      //  $('#faucet-link').setAttribute("disabled", "disabled");
+      //  $('#faucet-input').style.opacity = "0.4";
+    //});
+
+
+</script>
