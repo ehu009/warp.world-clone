@@ -1,4 +1,4 @@
-<%= form_for @warp_user, url: user_path(@warp_user) do |form| %>
+<%= form_for @warp_user, url:   update_queuer_path(@warp_user.id) do |form| %>
 
   
   <div class="field">
@@ -7,7 +7,7 @@
   </div>
     
   <div class="field">
-    <strong><%= form.label :encrypted_api_key do |label|%>key (our secret)<% end %></strong><br>
+    <strong><%= form.label :api_key do |label|%>key (our secret)<% end %></strong><br>
     <%= form.text_field :api_key %>
   </div>
   
