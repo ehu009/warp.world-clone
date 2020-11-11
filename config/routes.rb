@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   # end
   end
 
-  constraints :subdomain => 'warp' do
+  constraints :subdomain => 'warp.eirik' do
     scope module: 'warp' do
       #routes for a viewer and new users
       root to: 'users#new'
