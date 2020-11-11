@@ -26,7 +26,7 @@ class Warp::UsersController < ApplicationController
   end
 
   def redir
-    redirect_to edit_list_path(params[:api_key])
+    redirect_to queue_index_path(params[:api_key])
   end
 
   def start
