@@ -14,10 +14,20 @@ class Warp::UsersController < ApplicationController
   def enable
     @warp_user.active = true
     @warp_user.save
+    @active = @warp_user.active
+    respond_to do |r|
+      r.js
+    end    
+
   end
   def disable
     @warp_user.active = false
     @warp_user.save
+    @active = @warp_user.active
+    respond_to do |r|
+      r.js
+    end    
+
   end
   def clear
     @warp_user.levels.each do |l|
@@ -26,7 +36,7 @@ class Warp::UsersController < ApplicationController
   end
 
   def redir
-    redirect_to queue_index_path(params[:api_key])
+    redirect_to queuer_path(params[:api_key])
   end
 
   def start
@@ -110,14 +120,13 @@ class Warp::UsersController < ApplicationController
   # PATCH/PUT /warp/users/1.json
   def update
     using_api_key
+    new_name = params[:new_name]
+    new_key = params[:new_key]
+    @warp_user.channel_name = new_name
+    @warp_user.api_key = new_key
+    @warp_user.save
     respond_to do |format|
-      if @warp_user.update(params)
         format.html { redirect_to queuer_path(@warp_user.api_key), notice: 'User was successfully updated.' }
-        #format.json { render :show, status: :ok, location: @warp_user }
-      else
-        format.html { render :edit }
-        #format.json { render json: @warp_user.errors, status: :unprocessable_entity }
-      end
     end
   end
 
