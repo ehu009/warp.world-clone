@@ -1,17 +1,17 @@
-<%= form_for @warp_user, url:   update_queuer_path(@warp_user.id) do |form| %>
+<%= form_tag update_queuer_path(@warp_user.api_key), :method => 'patch' do |form| %>
 
   
   <div class="field">
-    <strong><%= form.label :channel_name %></strong>
-    <%= form.text_field :channel_name %>
+    <strong><%= label_tag :new_name %></strong>
+    <%= text_field_tag :new_name %>
   </div>
     
   <div class="field">
-    <strong><%= form.label :api_key do |label|%>key (our secret)<% end %></strong><br>
-    <%= form.text_field :api_key %>
+    <strong><%= label_tag :new_key do |label|%>key (our secret)<% end %></strong><br>
+    <%= text_field_tag :new_key %>
   </div>
   
   <div class="actions">
-    <%= form.submit %>
+    <%= submit_tag %>
   </div>
 <% end %>
