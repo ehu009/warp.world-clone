@@ -1,56 +1,43 @@
 
 <p style="text-align: center;">
-
-<input id="faucet-input" type="checkbox" <% if @warp_user.active %>checked="true"<% end %> >
-<br>
-<div id="faucet-text">
-<%= @warp_user.active%>
-</div>
+  <input id="faucet-input" type="checkbox" <% if @warp_user.active %>checked="true"<% end %>>
+  <br>
+  <div id="faucet-text"><%= @warp_user.active%></div>
 </p>
+
 <script type="text/javascript">
-function faucet_change_url ()
-{
-  $('#faucet-input').prop('disable', true);
-  var f = $('#faucet-input').prop('checked');
-  var url = window.location;
-  const has_trailing_slash = (s) => /^.*\/$/.test(s);
-  if (!has_trailing_slash(url)) {
-    url += '/';
+  function faucet_change_url ()
+  {
+    $('#faucet-input').prop('disable', true);
+    var f = $('#faucet-input').prop('checked');
+    var url = window.location;
+    const has_trailing_slash = (s) => /^.*\/$/.test(s);
+    if (!has_trailing_slash(url)) {
+      url += '/';
+    }
+
+    url += f ? 'q/enable' : 'q/disable';
+    $.get(url, function(){});
   }
 
-  url += f ? 'q/enable' : 'q/disable';
-  $.get(url, function(){});  
-}
-
-$('#faucet-input').change(function(){;faucet_change_url();});
-
-</script>
+  $('#faucet-input').change(function(){;faucet_change_url();});
 
 
-
-
-<script>
-function load_faucet(id, v) {
-  $(id).prop('checked', v);
-<% txt = "Levels can not be submitted to the queue" %>
-<% if @warp_user.active then %>
-<% txt="Levels can be submitted to the queue" %>
-<% end %>
-  
-}
-    $(function() {
-        var j = $('#faucet-input');
-
-        j.bootstrapToggle({
-on: "OPEN",
-off: "CLOSED",
-            onstyle: "success",
-            offstyle: "danger",
-            size: 'large'
-        });
-
-
-
+  function load_faucet(id, v) {
+    $(id).prop('checked', v);
+    <% txt = "Levels can not be submitted to the queue" %>
+    <% if @warp_user.active then %>
+    <% txt="Levels can be submitted to the queue" %>
+    <% end %>
+  }
+  $(function() {
+    var j = $('#faucet-input');
+    j.bootstrapToggle({
+      on: "OPEN",
+      off: "CLOSED",
+      onstyle: "success",
+      offstyle: "danger",
+      size: 'large'
+      });
     });
-
 </script>

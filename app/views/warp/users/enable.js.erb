@@ -5,7 +5,3 @@ alert("response enable");
 $('faucet-text').html = "Levels <strong>can be</strong> submitted to the queue";
 $('#faucet-link').setAttribute("href","<%= escape_javascript(queue_open_path(@warp_user.api_key)) %>");
 $('#faucet-input').prop('checked', true);
-//$('#faucet-input').bootstrapToggle('enable');
-//$("#faucet").html("<%#= escape_javascript(render partial: 'faucet' ) %>");
-//$('#faucet').style.opacity = "1.0";
-//$('#faucet-link').setAttribute("href","<%# escape_javascript(queue_open_path(@warp_user.api_key)) %>");

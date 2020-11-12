@@ -1,20 +1,14 @@
 
 <style>
-
   body {
     background-color: #ecbb00;
     font-family: verdana, arial, helvetica, sans-serif;
     font-weight: bold;
     color: white;
   }
-  .zoomer {
-    transition: transform .2s; /* Animation */
+  .zoomer { transition: transform .2s; }
+  .zoomer:hover { transform: scale(1.2); }
 
-  }
-
-  .zoomer:hover {
-    transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  }
   i.fas{
     color:white;
   }
@@ -24,117 +18,87 @@
   }
   .level-card.card-header {
     background-color:#8e7000;
-
   }
 
-    .settings-card {
-      background-color: #f9db00;
-      margin-bottom: 32px;
-      color: #c19c00;
-    }
-    .settings-card.card-header {
-      color: white;
-    }
-
-
+  .settings-card {
+    background-color: #f9db00;
+    margin-bottom: 32px;
+    color: #c19c00;
+  }
+  .settings-card.card-header {
+    color: white;
+  }
 </style>
-
-
 
 <div class="container-fluid row">
 
-<div class="col-lg-2">
-  &nbsp;
-</div>
-
+  <div class="col-lg-2">
+    &nbsp;
+  </div>
 
   <div class="col-xs-6 col-lg-8">
-<div class="card settings-card">
+    <div class="card settings-card">
+	
+      <div class="card-header settings-card">
+        <h1>Hello, <strong><%= @warp_user.channel_name %>!</h1></strong>
+      </div>
+      <div class="card-body settings-card">
+        <p>
+          Linking to your queue, for viewers to see:&nbsp;
+          <strong><code>
+            <%= user_levels_url(@warp_user) %>
+          </code></strong>
+        </p>
 
-  <div class="card-header settings-card">
-      <h1>Hello, <strong><%= @warp_user.channel_name %>!</h1></strong>
-  </div>
-  <div class="card-body settings-card">
-<p>
-Linking to your queue, for viewers to see:&nbsp;
-<strong>
-<code>
-<%= user_levels_url(@warp_user) %>
-</code></strong>
-</p>
+        <%= render 'bot_info', usr: @warp_user %>
+      </div>
+    </div>
 
-
-<%= render 'bot_info', usr: @warp_user %>
-
-
-
-
-  </div>
-</div>
-
-
-
-    <div class=" row">
+    <div class="row">
       <div class="col-sm-6 col-md-6">
-
-  <div class="card settings-card">
-<div class="card-header settings-card">
- <strong> <h3>Editing your user info</h3></strong>
-</div>
-    <div class="card-body settings-card">
-
-
-
-<%= render "formus", warp_user: @warp_user %>
+	
+        <div class="card settings-card">
+          <div class="card-header settings-card">
+            <strong><h3>
+              Editing your user info
+            </h3></strong>
+          </div>
+		
+          <div class="card-body settings-card">
+            <%= render "formus", warp_user: @warp_user %>
+          </div>
         </div>
-  </div>
       </div>
 
-        <div class="col-sm-6 col-md-6">
-          <div class="card settings-card">
+      <div class="col-sm-6 col-md-6">
+        <div class="card settings-card">
           <div class="card-header settings-card">
             <strong><h3>Submission management</h3></strong>
           </div>
-          <div class="card-body settings-card">
+        <div class="card-body settings-card">
+          <%= render 'faucet' %>
+          <% empty = @levels == nil or @levels == []%>
+          <% if empty then %>
+          <p>
+            <strong>The queue is empty</strong>
+          </p>
+          <% else %>
 
-<%= render 'faucet' %>
-
-
-<% empty = @levels == nil or @levels == []%>
-<% if empty then %>
-<p>
-<strong>The queue is empty</strong>
-</p>
-<% else %>
-
-<p>
-<strong>Clear all levels from queue:</strong>&nbsp;
-<%= link_to list_clear_all_path(@warp_user.api_key), remote: :true do |link| %>
-<button type="button">Commit</button>
-<% end %>
-</p>
-<% end %>
-
-
+          <p>
+            <strong>Clear all levels from queue:</strong>&nbsp;
+            <%= link_to list_clear_all_path(@warp_user.api_key), remote: :true do |link| %>
+            <button type="button">Commit</button>
+          <% end %>
+          </p>
+          <% end %>
         </div>
-
-
-
-
-
-
-
-
-          </div>
+      </div>
+    </div>
   </div>
+</div>
 
 
-  </div>
-
-
-  </div>
-  <div class="col-sm-2">
-  </div>
+<div class="col-sm-2"> &nbsp;</div>
 </div>
 <hr/>
 <% if empty then %>
@@ -145,174 +109,121 @@ Linking to your queue, for viewers to see:&nbsp;
 <h1>Level submissions</h1>
 
 <p>
-By hitting play, you can see how long has been spent on a level. <br>
-When you are done, hit either to complete or skip the current level.<br>
+  By hitting play, you can see how long has been spent on a level. <br>
+  When you are done, hit either to complete or skip the current level.<br>
 
 </p>
 
 
-
-
-
-
-
-      <!--
-<style>
-  .textshadow .blurry-text {
-  color: transparent;
-  text-shadow: 0 0 5px rgba(0,0,0,0.5);
-  }
-  </style>-->
-
 <!-- #f9db00 -->
 
 <div class="container-fluid row">
-<% @levels.each do |l| %>
-<div class="col-md-3"></div>
-<div class="col-md-6">
-        <div class="card level-card zoomer">
- <div class="card-header level-card">
-   <table width="100%">
-<tr>
-
-  <td width="*">
-    <h5>
-   <strong><%= l.added_by %></strong>,
-
-   <%= distance_of_time_in_words_to_now l.created_at %> ago
-    </h5>
-  </td>
-  <td width="40%">&nbsp;</td>
-   <td width="10%">
-   <%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
-     <i class="fas fa-lg fa-undo"></i>
-   <% end %>
-   <%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
-     <i class="fas fa-lg fa-trash"></i>
-       <%end %>
-     </td>
-</tr>
-   </table>
- </div>
-
-  <div class="card-body level-card">
-
-
-
-
-
-
-
-<% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><% end %>
-<strong>
-
-  <div id="time-started-<%=l.id %>" style="display:none;">
-    <% if l.started_at != nil then %>
-    <%= l.started_at.to_f * 1000 %>
-      <% end %>
-  </div>
-
-<div id="time-spent-<%=l.id %>">
-  <% if l.completed_at == nil then %>
-  <%= l.started_at.to_f * 1000 %>
-    <% else %>
-    <%= (l.completed_at - l.started_at).to_f * 1000 %>
-
-    <% end %>
-</div>
-
-  <script>
-      setInterval(function(){
-
-          var fuck = $('#time-started-<%=l.id %>');
-
-var d = fuck.innerHTML;
-
-        //  var date = new Date(fuck.innerText);
-
-        //  alert(date);
-
-        //  $('#time-spent-<%#= l.id %>').innerText = date.getMinutes() + ":" + date.getSeconds() + " dildo";
-
-      }, 5000);
-  </script>
-
-<% if l.status == "current" then %>
-
-<% else %>
-<%# if l.started_at != nil and l.completed_at != nil then %>
-<%#= distance_of_time_in_words (l.completed_at - l.started_at) %>
-<%# end %>
-<% end %>
-</strong>
-
-
-
-  <%= link_to queue_play_path(api_key: @warp_user.api_key, code: l.code), remote: :true do |link| %>
-
-      <h2>
-      <div style="color: transparent;font-weight:bold; text-shadow: 0 0 9.5px rgba(0,0,0,0.5);"><%= l.code %></div>
-      </h2>
-    <% end %>
-
-
-  </div>
-
-
-</div>
-</div>
+  <% @levels.each do |l| %>
   <div class="col-md-3"></div>
-<% end %>
+  
+  <div class="col-md-6">
+    <div class="card level-card zoomer">
+      <div class="card-header level-card">
+        <table width="100%"><tr>
 
+          <td width="*">
+            <h5>
+             <strong><%= l.added_by %></strong>,
+             <%= distance_of_time_in_words_to_now l.created_at %> ago
+            </h5>
+          </td>
+      
+	      <td width="40%">&nbsp;</td>
+      
+          <td width="10%">
+            <%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
+            <i class="fas fa-lg fa-undo"></i>
+            <% end %>
+            <%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
+            <i class="fas fa-lg fa-trash"></i>
+            <%end %>
+          </td>
+        </tr></table>
+      </div>
 
+      <div class="card-body level-card">
+        <% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><% end %>
 
+        <strong>
+          <div id="time-started-<%=l.id %>" style="display:none;">
+            <% if l.started_at != nil then %>
+            <%= l.started_at.to_f * 1000 %>
+            <% end %>
+          </div>
 
+          <div id="time-spent-<%=l.id %>">
+            <% if l.completed_at == nil then %>
+            <%= l.started_at.to_f * 1000 %>
+            <% else %>
+            <%= (l.completed_at - l.started_at).to_f * 1000 %>
+            <% end %>
+          </div>
+        </strong>
 
-<% end %>
+        <script>
+          setInterval(function(){
+            var fuck = $('#time-started-<%=l.id %>');
+            var d = fuck.innerHTML;
+          }, 5000);
+        </script>
+
+       <%= link_to queue_play_path(api_key: @warp_user.api_key, code: l.code), remote: :true do |link| %>
+        <h2>
+          <div style="color: transparent;font-weight:bold; text-shadow: 0 0 9.5px rgba(0,0,0,0.5);"><%= l.code %></div>
+        </h2>
+        <% end %>
+      </div>
     </div>
-
-
-
+  </div>
+  
+  <div class="col-md-3"></div>
+  <% end %>
+<% end %>
+</div>
 
 
 
 <p>
-<table border="2">
-  <thead>
-  <strong>
-    <tr>
-      <td>Current level?</td>
-      <td>Time spent</td>
-      <td>&nbsp;</td>
-      <td>Added by</td>
-      <td>Status</td>
-      <td>Time since submission</td>
+  <table border="2">
+    <thead>
+    <strong>
+      <tr>
+        <td>Current level?</td>
+        <td>Time spent</td>
+        <td>&nbsp;</td>
+        <td>Added by</td>
+        <td>Status</td>
+        <td>Time since submission</td>
 
-      <td>&nbsp;</td>
-      <td>Level code</td>
-      <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>Level code</td>
+        <td>&nbsp;</td>
 
-      <td>Play</td>
-      <td>Skip</td>
-      <td>Complete</td>
-      <td>Reset</td>
-      <td>&nbsp;</td>
-      <td>Delete</td>
-    </tr>
-  </strong>
+        <td>Play</td>
+        <td>Skip</td>
+        <td>Complete</td>
+        <td>Reset</td>
+        <td>&nbsp;</td>
+        <td>Delete</td>
+      </tr>
+    </strong>
   </thead>
   <tbody>
-  <% @levels.each do |l| %>
-
+    <% @levels.each do |l| %>
     <tr>
       <td><% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><%end%> </td>
       <td><strong>
         <% if l.status == "current" then %>
-          <%= distance_of_time_in_words_to_now l.started_at %></strong></td>
+        <%= distance_of_time_in_words_to_now l.started_at %></strong></td>
         <% else %>
-          <% if l.started_at != nil and l.completed_at != nil then %>
-            <%= distance_of_time_in_words (l.completed_at - l.started_at) %>
-          <% end %>
+        <% if l.started_at != nil and l.completed_at != nil then %>
+        <%= distance_of_time_in_words (l.completed_at - l.started_at) %>
+        <% end %>
         <% end %>
         <td>&nbsp;</td>
 
@@ -320,42 +231,37 @@ var d = fuck.innerHTML;
         <td><%= l.status %></td>
         <td><%= distance_of_time_in_words_to_now(l.created_at) %></td>
 
-
         <td>&nbsp;</td>
-        <td><div style="color: transparent; text-shadow: 0 0 4.5px rgba(0,0,0,0.5);"><%= l.code %></div></td>
-        <td>&nbsp;</td>
-
+        
+		<td><div style="color: transparent; text-shadow: 0 0 4.5px rgba(0,0,0,0.5);"><%= l.code %></div></td>
+        
+		<td>&nbsp;</td>
 
         <td><%= link_to start_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-play"></i>
           <% end %>
         </td>
+
         <td><%= link_to skip_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-forward"></i>
           <% end %></td>
+
         <td><%= link_to complete_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-check"></i>
           <% end %></td>
+
         <td><%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-undo"></i>
           <% end %></td>
-        <td>&nbsp;
-        </td>
-        <td><%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
+
+        <td>&nbsp;</td>
+        
+		<td><%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-trash"></i>
-          <% end %></td>
+            <% end %></td>
 
-
-
-
-
-        </tr>
-
-
-
-  <% end %>
-  </tbody>
-</table>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 </p>
-
-
