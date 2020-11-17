@@ -189,7 +189,7 @@
 
 
 <p>
-  <table border="2">
+  <table border="2" id="level-list">
     <thead>
     <strong>
       <tr>
@@ -213,23 +213,64 @@
       </tr>
     </strong>
   </thead>
+  
+  <script>
+    function c(content)
+	{
+	  return '<td>' + content + '</td>';
+	}
+    function create_row(id, status, timestamp1, timestamp2, user, level)
+	{
+	  var s = '<tr id=\"level-list-row-' + id + '\">';
+	
+	  s += c(status == 'current'?'<i class="fas fa-thumbs-up"></i>':'');
+	  s += c('buskbusk');
+	  s += c('');
+	  s += c(user);
+	  s += c(status);
+	  s += c('');
+	  s += c('');
+	  s += c(level);
+	  s += c('');
+	  s += c('plei');
+	  s += c('skip');
+	  s += c('complete');
+	  s += c('reset');
+	  s += c('');
+	  s += c('delete');
+	  
+	
+	  s += '</tr>';
+	  return s;
+	}
+  
+	$(document).ready(
+	function(){
+	var s = $('#level-list.tbody').html();
+	<% @levels.each do |l| %>
+      s += create_row(<%=l.id%>,<%=l.status%>,false,false,<%=l.added_by%>,<%=l.code%>);
+	<%end%>
+	$('#level-list.tbody').html(s):
+	});
+	</script>
   <tbody>
-    <% @levels.each do |l| %>
-    <tr>
-      <td><% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><%end%> </td>
+  </tbody>
+	<!--
+	<tr>
+      <td><%# if l.status == "current" then %><i class="fas fa-thumbs-up"></i><%#end%> </td>
       <td><strong>
-        <% if l.status == "current" then %>
-        <%= distance_of_time_in_words_to_now l.started_at %></strong></td>
-        <% else %>
-        <% if l.started_at != nil and l.completed_at != nil then %>
-        <%= distance_of_time_in_words (l.completed_at - l.started_at) %>
-        <% end %>
-        <% end %>
+        <%# if l.status == "current" then %>
+        <%#= distance_of_time_in_words_to_now l.started_at %></strong></td>
+        <%# else %>
+        <%# if l.started_at != nil and l.completed_at != nil then %>
+        <%#= distance_of_time_in_words (l.completed_at - l.started_at) %>
+        <%# end %>
+        <%# end %>
         <td>&nbsp;</td>
 
-        <td><strong><%= l.added_by %></strong></td>
-        <td><%= l.status %></td>
-        <td><%= distance_of_time_in_words_to_now(l.created_at) %></td>
+        <td><strong><%#= l.added_by %></strong></td>
+        <td><%#= l.status %></td>
+        <td><%#= distance_of_time_in_words_to_now(l.created_at) %></td>
 
         <td>&nbsp;</td>
         
@@ -237,31 +278,31 @@
         
 		<td>&nbsp;</td>
 
-        <td><%= link_to start_level_path(@warp_user.api_key, l.code) do |link| %>
+        <td><%#= link_to start_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-play"></i>
-          <% end %>
+          <%# end %>
         </td>
 
-        <td><%= link_to skip_level_path(@warp_user.api_key, l.code) do |link| %>
+        <td><%#= link_to skip_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-forward"></i>
-          <% end %></td>
+          <%# end %></td>
 
-        <td><%= link_to complete_level_path(@warp_user.api_key, l.code) do |link| %>
+        <td><%#= link_to complete_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-check"></i>
-          <% end %></td>
+          <%# end %></td>
 
-        <td><%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
+        <td><%#= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-undo"></i>
-          <% end %></td>
+          <%# end %></td>
 
         <td>&nbsp;</td>
         
-		<td><%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
+		<td><%#= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-trash"></i>
-            <% end %></td>
+            <%# end %></td>
 
       </tr>
-      <% end %>
-    </tbody>
+      <%# end %>
+    <!-- </tbody> -->
   </table>
 </p>
