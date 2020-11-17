@@ -50,7 +50,7 @@
           </code></strong>
         </p>
 
-        <%= render 'bot_info', usr: @warp_user %>
+        <%= render("bot_info", usr: @warp_user) %>
       </div>
     </div>
 
@@ -76,7 +76,7 @@
             <strong><h3>Submission management</h3></strong>
           </div>
         <div class="card-body settings-card">
-          <%= render 'faucet' %>
+          <%= render "faucet" %>
           <% empty = @levels == nil or @levels == []%>
           <% if empty then %>
           <p>
