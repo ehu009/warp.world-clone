@@ -114,7 +114,7 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
 <br>
 -</p>
 <% else %>
-<h1>Level submissions</h1>
+<h1>Level submissions<span style="text-align:right;"><i id="level-list-spinner" class="fas fa-spin fa-spinner" style="display:none;"></i></span></h1>
 
 <p>
   By hitting play, you can see how long has been spent on a level. <br>
@@ -128,6 +128,7 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
 
 <div class="container-fluid row">
   <% @levels.each do |l| %>
+  <% if l.status == "current" then %>
   <div class="col-md-3"></div>
   
   <div class="col-md-6">
@@ -191,6 +192,9 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
   </div>
   
   <div class="col-md-3"></div>
+  <% else %>
+  
+  <% end %>
   <% end %>
 <% end %>
 </div>
@@ -235,6 +239,19 @@ function url_for(method, obj)
   s += '/c/' + method + '/' + obj;
   return s;
 }
+function buttons_for_row(level)
+{
+  var s = "";
+  s += c('<a class="level-list-control" href="'+url_for('start', level)+'"><i class="fas fa-play"></i></a>');
+  s += c('<a class="level-list-control" href="'+url_for('skip', level)+'"><i class="fas fa-next"></i></a>');
+  s += c('<a class="level-list-control" href="'+url_for('complete', level)+'"><i class="fas fa-stop"></i></a>');
+  s += c('<a class="level-list-control" href="'+url_for('reset', level)+'"><i class="fas fa-reset"></i></a>');
+  s += c('');
+  s += c('<a class="level-list-control" href="'+url_for('remove', level)+'"><i class="fas fa-trash"></i></a>');
+  return s;
+}
+
+
     function create_row(id, status, timestamp1, timestamp2, user, level)
 	{
 	  var s = '<tr id=\"level-list-row-' + id + '\">';
@@ -247,20 +264,19 @@ function url_for(method, obj)
 	  s += c('');
 	  s += c(level);
 	  s += c('');
-	  s += c('<a href="'+url_for('start', level)+'">play</a>');
-	  s += c('<a href="'+url_for('skip', level)+'">skip</a>');
-	  s += c('<a href="'+url_for('complete', level)+'">complete</a>');
-	  s += c('<a href="'+url_for('reset', level)+'">reset</a>');
-	  s += c('');
-	  s += c('<a href="'+url_for('remove', level)+'">remove</a>');
-	  
-	
+	  s += buttons_for_(level);
+	  	
 	  s += '</tr>';
 	  return s;
 	}
   
 	$(document).ready(
 	function(){
+	
+	$('.level-list-control').click(function(){
+	  $('#level-list-spinner').show();
+	});
+	
 	var s = $('#level-list').html();
 	<% @levels.each do |l| %>
       s += create_row(<%=l.id%>,'<%=l.status == nil ? "" : l.status%>','<%=l.created_at%>','<%=l.started_at%>','<%=l.added_by%>','<%=l.code%>');

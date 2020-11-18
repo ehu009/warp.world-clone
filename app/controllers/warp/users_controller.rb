@@ -2,10 +2,13 @@ class Warp::UsersController < ApplicationController
   
   #before_action :set_warp_user, only: [:destroy]
   before_action :using_api_key, only: [:update, :enable, :disable, :play, :start, :remove, :skip, :complete, :reset, :clear]
-  
+  before_action :find_level, only: [:start, :complete, :skip, :reset, :remove]
   after_action :respond_to_submission_management, only: [:enable, :disable]
+  after_action :respond_to_queue_controls, only: [:start, :complete, :skip, :reset, :remove]
   
-  
+  def respond_to_queue_controls
+    render :queue_update
+  end
     
   def play     #unused
     code = params[:code]
@@ -29,49 +32,56 @@ class Warp::UsersController < ApplicationController
 
 
 
+  def stop_timer level
+    level.completed_at = Time.now
+  end
 
 
   def redir
     redirect_to queuer_path(params[:api_key])
   end
-
+  
   def start
-    level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
-    level.status = "current"
-    level.started_at = Time.now
-    level.save
-    redir
+    current = Warp::Level.find_by user_id: @warp_user.id, status: 'current'
+	if current != nil then
+      current.status = 'skipped'
+	  stop_timer(current)
+	  current.save
+	end
+	
+	
+	@level.status = 'current'
+    @level.started_at = Time.now
+    @level.save
+    #redir
   end
   
   def remove
-    level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
-    level.destroy
-    redir
+    @level.destroy
+    #redir
   end
   
   def reset
-    level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
-    level.status = nil
-    level.started_at = nil
-    level.completed_at = nil
-    level.save
-    redir
+    @level.status = nil
+    @level.started_at = nil
+    @level.completed_at = nil
+    @level.save
+    #redir
   end
   
+  
   def complete
-    level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
-    level.status = "completed"
-    level.completed_at = Time.now
-    level.save
-    redir
+    @level.status = "completed"
+    stop_timer @level
+    @level.save
+    #redir
   end
   
   def skip
-    level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
-    level.status = "skipped"
-    level.completed_at = Time.now
-    level.save
-    redir
+    @level.status = "skipped"
+    stop_timer @level
+    @level.save
+    #redir
   end
   
   # GET /warp/users
@@ -157,4 +167,9 @@ class Warp::UsersController < ApplicationController
     def respond_to_submission_management
       @active = @warp_user.active
     end
+	
+	# for interacting with a level
+	def find_level
+      @level = Warp::Level.find_by user_id: @warp_user.id, code: params[:level_code]
+	end
 end
