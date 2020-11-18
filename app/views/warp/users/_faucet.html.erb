@@ -1,9 +1,5 @@
 
-<p style="text-align: center;">
-  <input id="faucet-input" type="checkbox" <% if @warp_user.active %>checked="true"<% end %>>
-  <br>
-  <div id="faucet-text"><%= @warp_user.active%></div>
-</p>
+<input id="faucet-input" type="checkbox" <% if @warp_user.active %>checked="true"<% end %>>
 
 <script type="text/javascript">
   function faucet_change_url ()

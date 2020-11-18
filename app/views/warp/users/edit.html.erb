@@ -76,7 +76,9 @@
             <strong><h3>Submission management <span style="text-align:'right';"><i id="sub-mgmt-spinner" style="display: none;" class="fa fa-spin fa-spinner"></i></span></h3></strong>
           </div>
         <div class="card-body settings-card">
-          <%= render "faucet" %>
+          <p style="text-align: center;">
+            <%= render "faucet" %>
+          </p>
           <% empty = @levels == nil or @levels == []%>
           <% if empty then %>
           <p>
@@ -86,9 +88,9 @@
 
           <p>
             <strong>Clear all levels from queue:</strong>&nbsp;
-            <%= link_to list_clear_all_path(@warp_user.api_key), remote: :true do |link| %>
-            <button type="button">Commit</button>
-          <% end %>
+            <%#= link_to list_clear_all_url(@warp_user.api_key) %>
+            <button id="sub-mgmt-clear-btn" type="button">Commit</button>
+          <%# end %>
           </p>
           <% end %>
         </div>
@@ -96,7 +98,13 @@
     </div>
   </div>
 </div>
+<script>
 
+$('#sub-mgmt-clear-btn').click(function(){
+$('#sub-mgmt-spinner').show();
+$.get('<%= list_clear_all_url(@warp_user.api_key) %>');
+});
+</script>
 
 <div class="col-sm-2"> &nbsp;</div>
 </div>
