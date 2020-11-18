@@ -24,9 +24,7 @@ class Warp::UsersController < ApplicationController
     allow_submissions false
   end    
   def clear
-    @warp_user.levels.each do |l|
-      l.destroy
-    end
+    @warp_user.levels.destroy_all
   end
 
 
@@ -158,8 +156,5 @@ class Warp::UsersController < ApplicationController
     end
     def respond_to_submission_management
       @active = @warp_user.active
-	  respond_to do |r|
-        r.js
-	  end
     end
 end
