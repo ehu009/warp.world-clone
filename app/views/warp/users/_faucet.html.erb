@@ -8,7 +8,6 @@
 <script type="text/javascript">
   function faucet_change_url ()
   {
-    $('#faucet-input').prop('disable', true);
     var f = $('#faucet-input').prop('checked');
     var url = window.location;
     const has_trailing_slash = (s) => /^.*\/$/.test(s);
@@ -17,6 +16,7 @@
     }
 
     url += f ? 'q/enable' : 'q/disable';
+	$('#sub-mgmt-spinner').show();
     $.get(url, function(){});
   }
 
