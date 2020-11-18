@@ -1,8 +1,13 @@
 class Warp::UsersController < ApplicationController
-  before_action :set_warp_user, only: [:show, :destroy]
+  
+  #before_action :set_warp_user, only: [:destroy]
   before_action :using_api_key, only: [:update, :enable, :disable, :play, :start, :remove, :skip, :complete, :reset, :clear]
-
-  def play
+  
+  after_action :respond_to_submission_management, only: [:enable, :disable]
+  
+  
+    
+  def play     #unused
     code = params[:code]
     if code != nil then
       # change level
@@ -11,29 +16,22 @@ class Warp::UsersController < ApplicationController
     end
   end
 
+  
   def enable
-    @warp_user.active = true
-    @warp_user.save
-    @active = @warp_user.active
-    respond_to do |r|
-      r.js
-    end    
-
+    allow_submissions
   end
   def disable
-    @warp_user.active = false
-    @warp_user.save
-    @active = @warp_user.active
-    respond_to do |r|
-      r.js
-    end    
-
-  end
+    allow_submissions false
+  end    
   def clear
     @warp_user.levels.each do |l|
       l.destroy
     end
   end
+
+
+
+
 
   def redir
     redirect_to queuer_path(params[:api_key])
@@ -119,7 +117,6 @@ class Warp::UsersController < ApplicationController
   # PATCH/PUT /warp/users/1
   # PATCH/PUT /warp/users/1.json
   def update
-    using_api_key
     new_name = params[:new_name]
     new_key = params[:new_key]
     @warp_user.channel_name = new_name
@@ -151,5 +148,18 @@ class Warp::UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def warp_user_params
       params.require(:warp_user).permit(:api_key, :channel_name)
+    end
+	
+	
+	# allow / deny level submissions
+    def allow_submissions(bool=true)
+      @warp_user.active = bool
+      @warp_user.save
+    end
+    def respond_to_submission_management
+      @active = @warp_user.active
+	  respond_to do |r|
+        r.js
+	  end
     end
 end
