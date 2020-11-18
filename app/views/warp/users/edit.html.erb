@@ -117,6 +117,7 @@
 
 <!-- #f9db00 -->
 
+
 <div class="container-fluid row">
   <% @levels.each do |l| %>
   <div class="col-md-3"></div>
@@ -189,7 +190,7 @@
 
 
 <p>
-  <table border="2" id="level-list">
+  <table border="2">
     <thead>
     <strong>
       <tr>
@@ -219,25 +220,31 @@
 	{
 	  return '<td>' + content + '</td>';
 	}
+function url_for(method, obj)
+{
+  var s = window.location;
+  
+  s += '/c/' + method + '/' + obj;
+  return s;
+}
     function create_row(id, status, timestamp1, timestamp2, user, level)
 	{
 	  var s = '<tr id=\"level-list-row-' + id + '\">';
-	
 	  s += c(status == 'current'?'<i class="fas fa-thumbs-up"></i>':'');
-	  s += c('buskbusk');
+	  s += c(timestamp2);
 	  s += c('');
 	  s += c(user);
 	  s += c(status);
-	  s += c('');
+	  s += c(timestamp1);
 	  s += c('');
 	  s += c(level);
 	  s += c('');
-	  s += c('plei');
-	  s += c('skip');
-	  s += c('complete');
-	  s += c('reset');
+	  s += c('<a href="'+url_for('start', level)+'">play</a>');
+	  s += c('<a href="'+url_for('skip', level)+'">skip</a>');
+	  s += c('<a href="'+url_for('complete', level)+'">complete</a>');
+	  s += c('<a href="'+url_for('reset', level)+'">reset</a>');
 	  s += c('');
-	  s += c('delete');
+	  s += c('<a href="'+url_for('remove', level)+'">remove</a>');
 	  
 	
 	  s += '</tr>';
@@ -246,14 +253,14 @@
   
 	$(document).ready(
 	function(){
-	var s = $('#level-list.tbody').html();
+	var s = $('#level-list').html();
 	<% @levels.each do |l| %>
-      s += create_row(<%=l.id%>,<%=l.status%>,false,false,<%=l.added_by%>,<%=l.code%>);
+      s += create_row(<%=l.id%>,'<%=l.status == nil ? "" : l.status%>','<%=l.created_at%>','<%=l.started_at%>','<%=l.added_by%>','<%=l.code%>');
 	<%end%>
-	$('#level-list.tbody').html(s):
+	$('#level-list').html(s);
 	});
 	</script>
-  <tbody>
+  <tbody id="level-list">
   </tbody>
 	<!--
 	<tr>
@@ -272,9 +279,8 @@
         <td><%#= l.status %></td>
         <td><%#= distance_of_time_in_words_to_now(l.created_at) %></td>
 
-        <td>&nbsp;</td>
-        
-		<td><div style="color: transparent; text-shadow: 0 0 4.5px rgba(0,0,0,0.5);"><%= l.code %></div></td>
+        <td>&nbsp;</td>        
+		<td><div style="color: transparent; text-shadow: 0 0 4.5px rgba(0,0,0,0.5);"><%#= l.code %></div></td>
         
 		<td>&nbsp;</td>
 
@@ -291,7 +297,7 @@
             <i class="fas fa-check"></i>
           <%# end %></td>
 
-        <td><%#= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
+        <td><%#= link_to reset_level_path(@warp_user.api_key, @levels.take().code) do |link| %>
             <i class="fas fa-undo"></i>
           <%# end %></td>
 
