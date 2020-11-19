@@ -1,0 +1,9 @@
+
+<% if @previous != nil then %>
+level_finish('<%= @previous.code %>');
+<% end %>
+
+level_begin('<%= @level.code %>');
+
+
+$('#level-list-spinner').hide();
