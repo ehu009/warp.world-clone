@@ -4,11 +4,6 @@ class Warp::UsersController < ApplicationController
   before_action :using_api_key, only: [:update, :enable, :disable, :play, :start, :remove, :skip, :complete, :reset, :clear]
   before_action :find_level, only: [:start, :complete, :skip, :reset, :remove]
   after_action :respond_to_submission_management, only: [:enable, :disable]
-  after_action :respond_to_queue_controls, only: [:start, :complete, :skip, :reset, :remove]
-  
-  def respond_to_queue_controls
-    render :queue_update
-  end
     
   def play     #unused
     code = params[:code]
@@ -37,28 +32,21 @@ class Warp::UsersController < ApplicationController
   end
 
 
-  def redir
-    redirect_to queuer_path(params[:api_key])
-  end
-  
   def start
-    current = Warp::Level.find_by user_id: @warp_user.id, status: 'current'
-	if current != nil then
-      current.status = 'skipped'
-	  stop_timer(current)
-	  current.save
+    @previous = Warp::Level.find_by user_id: @warp_user.id, status: 'current'
+	if @previous != nil then
+      @previous.status = 'skipped'
+	  stop_timer(@previous)
+	  @previous.save
 	end
-	
 	
 	@level.status = 'current'
     @level.started_at = Time.now
     @level.save
-    #redir
   end
   
   def remove
     @level.destroy
-    #redir
   end
   
   def reset
@@ -66,7 +54,6 @@ class Warp::UsersController < ApplicationController
     @level.started_at = nil
     @level.completed_at = nil
     @level.save
-    #redir
   end
   
   
@@ -74,14 +61,12 @@ class Warp::UsersController < ApplicationController
     @level.status = "completed"
     stop_timer @level
     @level.save
-    #redir
   end
   
   def skip
     @level.status = "skipped"
     stop_timer @level
     @level.save
-    #redir
   end
   
   # GET /warp/users
@@ -157,8 +142,8 @@ class Warp::UsersController < ApplicationController
     def warp_user_params
       params.require(:warp_user).permit(:api_key, :channel_name)
     end
-	
-	
+
+
 	# allow / deny level submissions
     def allow_submissions(bool=true)
       @warp_user.active = bool
