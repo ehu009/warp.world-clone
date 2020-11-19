@@ -28,6 +28,14 @@
   .settings-card.card-header {
     color: white;
   }
+.level-finished
+{
+background-color: rgba(0,0,0,0.3);
+}
+.level-current
+{
+background-color:rgba(255,0,0,0.3);
+}
 </style>
 
 <div class="container-fluid row">
@@ -199,8 +207,6 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
 <% end %>
 </div>
 
-
-
 <p>
   <table border="2">
     <thead>
@@ -228,6 +234,36 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
   </thead>
   
   <script>
+
+function level_by_code(code)
+{
+return $('#level-list-row-'+code);
+}
+
+function level_reset(code)
+{
+var o = level_by_code(code);
+o.removeClass('level-current');
+o.removeClass('level-finished');
+}
+
+function level_finish(code)
+{
+level_reset(code);
+var o = level_by_code(code);
+o.addClass('level-finished');
+}
+function level_begin(code)
+{
+level_reset(code);
+var o = level_by_code(code);
+o.addClass('level-current');
+
+}
+
+
+
+
     function c(content)
 	{
 	  return '<td>' + content + '</td>';
@@ -239,22 +275,45 @@ function url_for(method, obj)
   s += '/c/' + method + '/' + obj;
   return s;
 }
+function url_from_id(id)
+{
+var code = id.split('-');
+var method = code.pop();
+code = code.join('-');
+
+return url_for(method, code);
+
+} /*
+
+var s = window.location;
+  
+  s += '/c/' + method + '/' + obj;
+  return s;
+
+}*/
 function buttons_for_row(level)
 {
   var s = "";
-  s += c('<a class="level-list-control" href="'+url_for('start', level)+'"><i class="fas fa-play"></i></a>');
-  s += c('<a class="level-list-control" href="'+url_for('skip', level)+'"><i class="fas fa-next"></i></a>');
-  s += c('<a class="level-list-control" href="'+url_for('complete', level)+'"><i class="fas fa-stop"></i></a>');
-  s += c('<a class="level-list-control" href="'+url_for('reset', level)+'"><i class="fas fa-reset"></i></a>');
+  s += c('<div id="'+level+'-start" class="btn level-list-control"><i class="fas fa-play"></i></div>');
+  s += c('<div id="'+level+'-skip" class="btn level-list-control"><i class="fas fa-fast-forward"></i></div>');
+  s += c('<div id="'+level+'-complete" class="btn level-list-control"><i class="fas fa-stop"></i></div>');
+  s += c('<div id="'+level+'-reset" class="btn level-list-control""><i aria-hidden="true" class="fa fas fa-refresh"></i></div>');
   s += c('');
-  s += c('<a class="level-list-control" href="'+url_for('remove', level)+'"><i class="fas fa-trash"></i></a>');
+  s += c('<div id="'+level+'-remove" class="btn level-list-control"><i class="fas fa-trash"></i></div>');
   return s;
 }
 
 
     function create_row(id, status, timestamp1, timestamp2, user, level)
 	{
-	  var s = '<tr id=\"level-list-row-' + id + '\">';
+          var clr = '';
+if( status == 'skipped' || status == 'completed'){
+  clr = 'class="level-finished"';
+}else if (status == 'current') {
+  clr = 'class="level-current"';
+}
+
+	  var s = '<tr id=\"level-list-row-' + level + '\"' + clr+'>';
 	  s += c(status == 'current'?'<i class="fas fa-thumbs-up"></i>':'');
 	  s += c(timestamp2);
 	  s += c('');
@@ -264,7 +323,7 @@ function buttons_for_row(level)
 	  s += c('');
 	  s += c(level);
 	  s += c('');
-	  s += buttons_for_(level);
+	  s += buttons_for_row(level);
 	  	
 	  s += '</tr>';
 	  return s;
@@ -273,16 +332,20 @@ function buttons_for_row(level)
 	$(document).ready(
 	function(){
 	
-	$('.level-list-control').click(function(){
-	  $('#level-list-spinner').show();
-	});
 	
 	var s = $('#level-list').html();
 	<% @levels.each do |l| %>
       s += create_row(<%=l.id%>,'<%=l.status == nil ? "" : l.status%>','<%=l.created_at%>','<%=l.started_at%>','<%=l.added_by%>','<%=l.code%>');
 	<%end%>
 	$('#level-list').html(s);
+	$('.level-list-control').click( function(){
+	  $('#level-list-spinner').show();
+$.get(url_from_id(this.id));
+
 	});
+	});
+
+
 	</script>
   <tbody id="level-list">
   </tbody>
@@ -336,3 +399,5 @@ function buttons_for_row(level)
     <!-- </tbody> -->
   </table>
 </p>
+
+
