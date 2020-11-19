@@ -36,6 +36,11 @@ background-color: rgba(0,0,0,0.3);
 {
 background-color:rgba(255,0,0,0.3);
 }
+
+.blurred-out{
+style="color: transparent; text-shadow: 0 0 9.5px rgba(0,0,0,0.5);
+}
+
 </style>
 
 <div class="container-fluid row">
@@ -108,35 +113,33 @@ background-color:rgba(255,0,0,0.3);
 </div>
 <script>
 
-$('#sub-mgmt-clear-btn').click(function(){
-$('#sub-mgmt-spinner').show();
-$.get('<%= list_clear_all_url(@warp_user.api_key) %>');
+$('#sub-mgmt-clear-btn').click( function () {
+  $('#sub-mgmt-spinner').show();
+  $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
 });
+
 </script>
 
-<div class="col-sm-2"> &nbsp;</div>
-</div>
-<hr/>
-<% if empty then %>
-<p>...<br>
-<br>
--</p>
-<% else %>
-<h1>Level submissions<span style="text-align:right;"><i id="level-list-spinner" class="fas fa-spin fa-spinner" style="display:none;"></i></span></h1>
+<div class="col-lg-2"> &nbsp;</div>
 
-<p>
-  By hitting play, you can see how long has been spent on a level. <br>
-  When you are done, hit either to complete or skip the current level.<br>
+<div class="col-xs-6 col-lg-8">
 
-</p>
+<div class="card settings-card">
+	
+      <div class="card-header settings-card">
+        <h1>Level submissions<span style="text-align:right;"><i id="level-list-spinner" class="fas fa-spin fa-spinner" style="display:none;"></i></span></h1>
+      </div>
+      <div class="card-body settings-card">
+
+
 
 
 <!-- #f9db00 -->
 
-
+<!--
 <div class="container-fluid row">
-  <% @levels.each do |l| %>
-  <% if l.status == "current" then %>
+  <%# @levels.each do |l| %>
+  <%# if l.status == "current" then %>
   <div class="col-md-3"></div>
   
   <div class="col-md-6">
@@ -146,67 +149,67 @@ $.get('<%= list_clear_all_url(@warp_user.api_key) %>');
 
           <td width="*">
             <h5>
-             <strong><%= l.added_by %></strong>,
-             <%= distance_of_time_in_words_to_now l.created_at %> ago
+             <strong><%#= l.added_by %></strong>,
+             <%#= distance_of_time_in_words_to_now l.created_at %> ago
             </h5>
           </td>
       
 	      <td width="40%">&nbsp;</td>
       
           <td width="10%">
-            <%= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
+            <%#= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-lg fa-undo"></i>
-            <% end %>
-            <%= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
+            <%# end %>
+            <%#= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
             <i class="fas fa-lg fa-trash"></i>
-            <%end %>
+            <%#end %>
           </td>
         </tr></table>
       </div>
 
       <div class="card-body level-card">
-        <% if l.status == "current" then %><i class="fas fa-thumbs-up"></i><% end %>
+        <%#if l.status == "current" then %><i class="fas fa-thumbs-up"></i><% end %>
 
         <strong>
           <div id="time-started-<%=l.id %>" style="display:none;">
-            <% if l.started_at != nil then %>
-            <%= l.started_at.to_f * 1000 %>
-            <% end %>
+            <%# if l.started_at != nil then %>
+            <%#= l.started_at.to_f * 1000 %>
+            <%# end %>
           </div>
 
           <div id="time-spent-<%=l.id %>">
-            <% if l.completed_at == nil then %>
-            <%= l.started_at.to_f * 1000 %>
-            <% else %>
-            <%= (l.completed_at - l.started_at).to_f * 1000 %>
-            <% end %>
+            <%# if l.completed_at == nil then %>
+            <%#= l.started_at.to_f * 1000 %>
+            <%# else %>
+            <%#= (l.completed_at - l.started_at).to_f * 1000 %>
+            <%# end %>
           </div>
         </strong>
 
         <script>
           setInterval(function(){
-            var fuck = $('#time-started-<%=l.id %>');
+            var fuck = $('#time-started-<%#=l.id %>');
             var d = fuck.innerHTML;
           }, 5000);
         </script>
 
-       <%= link_to queue_play_path(api_key: @warp_user.api_key, code: l.code), remote: :true do |link| %>
+       <%#= link_to queue_play_path(api_key: @warp_user.api_key, code: l.code), remote: :true do |link| %>
         <h2>
-          <div style="color: transparent;font-weight:bold; text-shadow: 0 0 9.5px rgba(0,0,0,0.5);"><%= l.code %></div>
+          <div><%#= l.code %></div>
         </h2>
-        <% end %>
+        <%# end %>
       </div>
     </div>
   </div>
   
   <div class="col-md-3"></div>
-  <% else %>
+  <%# else %>
   
-  <% end %>
-  <% end %>
-<% end %>
+  <%# end %>
+  <%# end %>
+<%# end %>
 </div>
-
+-->
 <p>
   <table border="2">
     <thead>
@@ -245,19 +248,20 @@ function level_reset(code)
 var o = level_by_code(code);
 o.removeClass('level-current');
 o.removeClass('level-finished');
+o.addClass('blurred-out');
+return o;
 }
 
 function level_finish(code)
 {
-level_reset(code);
-var o = level_by_code(code);
+var o = level_reset(code);
 o.addClass('level-finished');
 }
 function level_begin(code)
 {
-level_reset(code);
-var o = level_by_code(code);
+var o = level_reset(code);
 o.addClass('level-current');
+o.removeClass('blurred-out');
 
 }
 
@@ -283,14 +287,7 @@ code = code.join('-');
 
 return url_for(method, code);
 
-} /*
-
-var s = window.location;
-  
-  s += '/c/' + method + '/' + obj;
-  return s;
-
-}*/
+}
 function buttons_for_row(level)
 {
   var s = "";
@@ -308,7 +305,7 @@ function buttons_for_row(level)
 	{
           var clr = '';
 if( status == 'skipped' || status == 'completed'){
-  clr = 'class="level-finished"';
+  clr = 'class="level-finished blurred-out"';
 }else if (status == 'current') {
   clr = 'class="level-current"';
 }
@@ -400,4 +397,7 @@ $.get(url_from_id(this.id));
   </table>
 </p>
 
-
+</div>
+</div>
+</div>
+</div>
