@@ -110,7 +110,6 @@ style="color: transparent; text-shadow: 0 0 9.5px rgba(0,0,0,0.5);
       </div>
     </div>
   </div>
-</div>
 <script>
 
 $('#sub-mgmt-clear-btn').click( function () {
@@ -120,9 +119,6 @@ $('#sub-mgmt-clear-btn').click( function () {
 
 </script>
 
-<div class="col-lg-2"> &nbsp;</div>
-
-<div class="col-xs-6 col-lg-8">
 
 <div class="card settings-card">
 	
@@ -136,80 +132,6 @@ $('#sub-mgmt-clear-btn').click( function () {
 
 <!-- #f9db00 -->
 
-<!--
-<div class="container-fluid row">
-  <%# @levels.each do |l| %>
-  <%# if l.status == "current" then %>
-  <div class="col-md-3"></div>
-  
-  <div class="col-md-6">
-    <div class="card level-card zoomer">
-      <div class="card-header level-card">
-        <table width="100%"><tr>
-
-          <td width="*">
-            <h5>
-             <strong><%#= l.added_by %></strong>,
-             <%#= distance_of_time_in_words_to_now l.created_at %> ago
-            </h5>
-          </td>
-      
-	      <td width="40%">&nbsp;</td>
-      
-          <td width="10%">
-            <%#= link_to reset_level_path(@warp_user.api_key, l.code) do |link| %>
-            <i class="fas fa-lg fa-undo"></i>
-            <%# end %>
-            <%#= link_to remove_level_path(@warp_user.api_key, l.code) do |link| %>
-            <i class="fas fa-lg fa-trash"></i>
-            <%#end %>
-          </td>
-        </tr></table>
-      </div>
-
-      <div class="card-body level-card">
-        <%#if l.status == "current" then %><i class="fas fa-thumbs-up"></i><% end %>
-
-        <strong>
-          <div id="time-started-<%=l.id %>" style="display:none;">
-            <%# if l.started_at != nil then %>
-            <%#= l.started_at.to_f * 1000 %>
-            <%# end %>
-          </div>
-
-          <div id="time-spent-<%=l.id %>">
-            <%# if l.completed_at == nil then %>
-            <%#= l.started_at.to_f * 1000 %>
-            <%# else %>
-            <%#= (l.completed_at - l.started_at).to_f * 1000 %>
-            <%# end %>
-          </div>
-        </strong>
-
-        <script>
-          setInterval(function(){
-            var fuck = $('#time-started-<%#=l.id %>');
-            var d = fuck.innerHTML;
-          }, 5000);
-        </script>
-
-       <%#= link_to queue_play_path(api_key: @warp_user.api_key, code: l.code), remote: :true do |link| %>
-        <h2>
-          <div><%#= l.code %></div>
-        </h2>
-        <%# end %>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3"></div>
-  <%# else %>
-  
-  <%# end %>
-  <%# end %>
-<%# end %>
-</div>
--->
 <p>
   <table border="2">
     <thead>
@@ -396,8 +318,9 @@ $.get(url_from_id(this.id));
     <!-- </tbody> -->
   </table>
 </p>
+</div>
+</div>
 
-</div>
-</div>
+
 </div>
 </div>
